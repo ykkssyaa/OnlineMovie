@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    <link rel="icon" type="image/png" href="{% url 'favicon' %}">
+</head>
+
+<body>
+<header >
+    
+</header>
+
+
+<main>
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+<footer >
+    <div class="col-5">
+        <a href="{% url 'index' %}"><img class="icon" src="{% url 'favicon' %}" alt="icon"/></a>
+        <a href="{% url 'index' %}">Главная страница</a>
+    </div>
+    <a class="col-3" href="{% url 'terms' %}">Правила использования сайтом</a>
+    <a class="col" href="{% url 'contacts' %}">Контакты</a>
+    <a class="col" href="/admin">Admin</a>
+</footer>
+
+</body>
+</html>
