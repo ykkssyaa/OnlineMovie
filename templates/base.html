@@ -6,13 +6,26 @@
     <title>{{ title }}</title>
 
     <link rel="icon" type="image/png" href="{% url 'favicon' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 </head>
 
 <body>
-<header >
-    
-</header>
+<header>
+    <a href="{% url 'index' %}"><img class="icon" src="{% url 'favicon' %}" alt="icon"/></a>
 
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'users:logout' %}" class="nav-link text-danger">Выход</a>
+
+        <a href="{% url 'users:profile' username=request.user.username %}">
+            {% include 'elems/users/avatar.html' with user_of_photo=request.user %}
+        </a>
+    {% else %}
+        <a href="{% url 'users:login' %}" class="nav-link">Вход</a>
+    {% endif %}
+
+
+</header>
+<hr>
 
 <main>
 
@@ -21,15 +34,14 @@
     {% endblock %}
 
 </main>
-
-<footer >
-    <div class="col-5">
+<hr>
+<footer>
+    <div>
         <a href="{% url 'index' %}"><img class="icon" src="{% url 'favicon' %}" alt="icon"/></a>
         <a href="{% url 'index' %}">Главная страница</a>
     </div>
-    <a class="col-3" href="{% url 'terms' %}">Правила использования сайтом</a>
-    <a class="col" href="{% url 'contacts' %}">Контакты</a>
-    <a class="col" href="/admin">Admin</a>
+    <a href="{% url 'terms' %}">Правила использования сайтом</a>
+    <a href="/admin">Admin</a>
 </footer>
 
 </body>

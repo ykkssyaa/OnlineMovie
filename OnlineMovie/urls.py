@@ -6,7 +6,7 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
-import views
+import OnlineMovie.views as views
 
 urlpatterns = [
     path('', views.index, name='index'),
