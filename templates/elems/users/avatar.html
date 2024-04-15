@@ -1,0 +1,6 @@
+{% load static %}
+{% if user_of_photo.photo %}
+    <img class="avatar" src="{{ user_of_photo.photo.url }}" alt="{{ user.username }} Avatar">
+{% else %}
+    <img class="avatar" src="{% static 'img/avatar.png' %}" alt="Default Avatar">
+{% endif %}
