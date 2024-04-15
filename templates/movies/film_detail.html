@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>{{ film.name }}</h1>
+
+    {% if film.cover %}
+        <img src="{{ film.cover.url }}" alt="Обложка фильма" style="width:100px;">
+    {% endif %}
+
+    {% if film.media_type == 'movie' %}
+    <video width="1000px" height="562px" controls>
+        <source src="{{ film.video_file.url }}" type="video/mp4">
+    </video>
+    {% endif %}
+
+    <p><strong>Дата премьеры:</strong> {{ film.premiere_date }}</p>
+    <p><strong>Дата анонса:</strong> {{ film.announcement_date }}</p>
+    <p><strong>Аннотация:</strong> {{ film.annotation }}</p>
+    <p><strong>Для взрослых:</strong>
+        {% if film.adult_content %}
+            Да
+        {% else %}
+            Нет
+        {% endif %}
+    </p>
+    <p><strong>Дата и время публикации:</strong> {{ film.publication_datetime }}</p>
+
+    <p><strong>Франшиза:</strong> {{ film.franchise }}</p>
+
+    {% if film.tags.all %}
+        <p><strong>Теги:</strong>
+            {% for tag in film.tags.all %}
+                {{ tag.name }}
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    {% endif %}
+
+    {% if film.media_type == 'series' %}
+        {% for season, episodes in episodes_by_series.items %}
+            <h2>{{ season }} сезон</h2>
+            <ul>
+                {% for episode in episodes %}
+                    <li><a href="{% url 'movies:episode_detail' episode.pk %}">{{ episode.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

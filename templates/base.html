@@ -13,6 +13,12 @@
 <header>
     <a href="{% url 'index' %}"><img class="icon" src="{% url 'favicon' %}" alt="icon"/></a>
 
+
+    <form method="GET" action="{% url 'movies:list' %}">
+        <input type="text" name="search" placeholder="Поиск...">
+        <button type="submit">Поиск</button>
+    </form>
+
     {% if request.user.is_authenticated %}
         <a href="{% url 'users:logout' %}" class="nav-link text-danger">Выход</a>
 

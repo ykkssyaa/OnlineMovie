@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>{{ title }}</h1>
+    <ul>
+        {% for film in movies %}
+            <li><a href="{{ film.get_absolute_url }}">{{ film.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
