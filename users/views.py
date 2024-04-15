@@ -4,9 +4,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
 
-from users.forms import LoginForm, RegisterForm
+from users.forms import LoginForm, RegisterForm, UserUpdateForm
 from users.models import CustomUser
 
 
@@ -44,3 +44,22 @@ class UserProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = "Профиль  " + self.kwargs['username']
         return context
+
+
+class UpdateUserPage(UpdateView):
+    model = CustomUser
+    form_class = UserUpdateForm
+    template_name = 'users/register.html'
+    extra_context = {'title': 'Обновление профиля', 'button': 'Обновить'}
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.request.user.birth_date:
+            initial['birth_date'] = self.request.user.birth_date
+        return initial
+
+    def get_success_url(self):
+        return reverse_lazy('users:profile', kwargs={'username': self.request.user.username})

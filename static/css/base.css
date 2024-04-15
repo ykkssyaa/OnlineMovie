@@ -1,3 +1,10 @@
+header .icon{
+    width: 50px;
+}
+
+footer .icon{
+    width: 38px;
+}
 
 .avatar {
     width: 70px;
