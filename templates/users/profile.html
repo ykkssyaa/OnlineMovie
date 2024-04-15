@@ -1,4 +1,19 @@
 {% extends 'base.html' %}
-{% block content %}
 
+{% block content %}
+    <div class="profile">
+        <h1>{{ user_p.username }}</h1>
+
+        {% include 'elems/users/avatar.html' with user_of_avatar=user_p %}
+
+        <p>Дата рождения: {{ user_p.birth_date }}</p>
+        <p>Имя: {{ user_p.first_name }}</p>
+        <p>Пол: {{ user_p.get_gender_display }}</p>
+        <p>Страна: {{ user_p.country.name }}</p>
+        <p>Описание: {{ user_p.bio }}</p>
+
+        {% if user_p.pk == request.user.pk %}
+            <a href="{% url 'users:update' %}">Редактировать профиль</a>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -11,18 +11,23 @@ from users.models import CustomUser
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(max_length=254, label='Email')
-    birth_date = forms.DateField(help_text='Обязательное поле. Формат: ДД-ММ-ГГГГ', input_formats=['%d-%m-%Y'],
-                                 label='Дата рождения')
     gender = forms.ChoiceField(choices=[('male', 'Мужской'), ('female', 'Женский'), ('other', 'Другой')], label='Пол')
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'email', 'password1', 'password2', 'birth_date', 'gender', 'country')
+        fields = ('username', 'email', 'password1', 'password2', 'first_name', 'birth_date', 'gender', 'country')
         labels = {
             'username': 'Имя пользователя',
             'password1': 'Пароль',
             'password2': 'Подтверждение пароля',
             'country': 'Страна',
+            'birth_date': 'День рождения',
+            'first_name': 'Имя',
+        }
+        widgets = {
+            'birth_date': forms.DateInput(
+                # attrs={'type': 'date'},
+            ),
         }
 
 
