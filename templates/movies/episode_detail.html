@@ -2,7 +2,7 @@
 {% block content %}
 
     <h1>{{ episode.number }}. {{ episode.name }}</h1>
-    <h3>{{ episode.series.name }}</h3>
+    <h3>{{ episode.series.name }}. {{ episode.season }} Сезон</h3>
     {% if episode.video_file %}
     <video width="1000px" height="562px" controls>
         <source src="{{ episode.video_file.url }}" type="video/mp4">

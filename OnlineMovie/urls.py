@@ -8,11 +8,13 @@ from django.conf.urls.static import static
 
 import OnlineMovie.views as views
 
-urlpatterns = [
+urlpatterns = (
+[
     path('', views.index, name='index'),
 
     path('admin/', admin.site.urls),
     path("terms/", views.terms, name="terms"),
+    path("contacts/", views.contacts, name="contacts"),
 
     path('movies/', include(('movies.urls', 'movies'))),
     path('reviews/', include(('reviews.urls', 'reviews'))),
@@ -22,6 +24,6 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("img/icon.png")),
         name="favicon"),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
 
 handler404 = views.page_not_found

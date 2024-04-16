@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
 from movies.models import Film, Episode
+from reviews.forms import ReviewForm, MarkForm
+from reviews.models import Review, Mark
 
 
 class FilmListView(ListView):
@@ -58,6 +60,20 @@ class FilmDetailView(DetailView):
                 episodes_by_series[season] = []
             episodes_by_series[season].append(episode)
         context['episodes_by_series'] = episodes_by_series
+
+        review = Review.objects.filter(movie=film, user=self.request.user).first()
+        if review:
+            # Если рецензия найдена, вставляем её текст в форму
+            context['form'] = ReviewForm(instance=review)
+        else:
+            # Иначе создаем пустую форму
+            context['form'] = ReviewForm()
+
+        mark = Mark.objects.filter(movie=film, user=self.request.user).first()
+        if mark:
+            context['markForm'] = MarkForm(instance=mark)
+        else:
+            context['markForm'] = MarkForm()
 
         return context
 

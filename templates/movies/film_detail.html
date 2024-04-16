@@ -8,9 +8,9 @@
     {% endif %}
 
     {% if film.media_type == 'movie' %}
-    <video width="1000px" height="562px" controls>
-        <source src="{{ film.video_file.url }}" type="video/mp4">
-    </video>
+        <video width="1000px" height="562px" controls>
+            <source src="{{ film.video_file.url }}" type="video/mp4">
+        </video>
     {% endif %}
 
     <p><strong>Дата премьеры:</strong> {{ film.premiere_date }}</p>
@@ -46,5 +46,31 @@
             </ul>
         {% endfor %}
     {% endif %}
+
+    {% if request.user.is_authenticated %}
+
+        <h2>Оставь оценку</h2>
+        <form method="post" action="{% url 'reviews:add_mark' film.pk %}">
+            {% csrf_token %}
+            {{ markForm.as_p }}
+            <button type="submit">Сохранить</button>
+        </form>
+
+        <h2>Добавить рецензию</h2>
+        <form method="post" action="{% url 'reviews:add_review' film.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Сохранить</button>
+        </form>
+    {% endif %}
+
+    <h2>Рецензии</h2>
+    <ul>
+        {% for review in film.review_set.all %}
+            <li>{{ review.text }}</li>
+        {% empty %}
+            <h3>Пока нет рецензий</h3>
+        {% endfor %}
+    </ul>
 
 {% endblock %}

@@ -42,10 +42,8 @@
 </main>
 <hr>
 <footer>
-    <div>
-        <a href="{% url 'index' %}"><img class="icon" src="{% url 'favicon' %}" alt="icon"/></a>
-        <a href="{% url 'index' %}">Главная страница</a>
-    </div>
+    <a href="{% url 'index' %}"><img class="icon" src="{% url 'favicon' %}" alt="icon"/></a>
+    <a class="col" href="{% url 'contacts' %}">Контакты</a>
     <a href="{% url 'terms' %}">Правила использования сайтом</a>
     <a href="/admin">Admin</a>
 </footer>

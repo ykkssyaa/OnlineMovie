@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
@@ -11,5 +12,5 @@ class Review(models.Model):
 class Mark(models.Model):
     movie = models.ForeignKey('movies.Film', on_delete=models.CASCADE)
     user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
-    Value = models.ValueRange(1, 5)
+    value = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
