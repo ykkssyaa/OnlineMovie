@@ -2,10 +2,25 @@
 {% block content %}
 
     <h1>{{ title }}</h1>
-    <ul>
-        {% for film in movies %}
-            <li><a href="{{ film.get_absolute_url }}">{{ film.name }}</a></li>
-        {% endfor %}
-    </ul>
+
+    <form method="GET" action="{% url 'movies:list' %}">
+        <div>
+            <label for="search">Поиск:</label>
+            <input type="text" name="search" id="search" value="{{ request.GET.search }}">
+        </div>
+        <div>
+            <label for="type">Тип:</label>
+            <select name="type" id="type">
+                <option value="">Все</option>
+                <option value="movie" {% if request.GET.type == "movie" %}selected{% endif %}>Фильмы</option>
+                <option value="series" {% if request.GET.type == "series" %}selected{% endif %}>Сериалы</option>
+            </select>
+        </div>
+        <button type="submit">Применить</button>
+    </form>
+    
+    <hr>
+    
+    {% include 'elems/movies/movies_list.html' %}
 
 {% endblock %}

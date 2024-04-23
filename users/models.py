@@ -22,6 +22,8 @@ class CustomUser(AbstractUser):
                               blank=True, null=True)
     adult_content_permission = models.BooleanField(default=None, null=True, verbose_name='Adult Content Permission')
 
+    bookmarks = models.ManyToManyField('movies.Film', related_name='bookmarks')
+
     def __str__(self):
         return self.username
 

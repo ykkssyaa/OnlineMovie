@@ -1,11 +1,13 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView
 
+from movies.models import Film
 from users.forms import LoginForm, RegisterForm, UserUpdateForm
 from users.models import CustomUser
 
@@ -46,6 +48,48 @@ class UserProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = "Профиль  " + self.kwargs['username']
         return context
+
+
+class UserBookmarksView(LoginRequiredMixin, ListView):
+    model = Film
+    template_name = 'users/bookmarks.html'
+    context_object_name = 'bookmarks_list'
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = get_user_model().objects.get(username=username)
+        return user.bookmarks.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_p'] = self.get_user()
+        context['title'] = "Закладки пользователя " + self.kwargs['username']
+        return context
+
+    def get_user(self):
+        username = self.kwargs['username']
+        return get_user_model().objects.get(username=username)
+
+
+class UserReviewsView(LoginRequiredMixin, ListView):
+    model = Film
+    template_name = 'users/reviews.html'
+    context_object_name = 'reviews_list'
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = get_user_model().objects.get(username=username)
+        return user.review_set.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_p'] = self.get_user()
+        context['title'] = "Рецензии пользователя " + self.kwargs['username']
+        return context
+
+    def get_user(self):
+        username = self.kwargs['username']
+        return get_user_model().objects.get(username=username)
 
 
 class UpdateUserPage(UpdateView):

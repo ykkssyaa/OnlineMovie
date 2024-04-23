@@ -15,12 +15,14 @@ def add_review(request, film_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            if review is None:
-                review = form.save(commit=False)
-
-            review.movie = film
-            review.user = request.user
-            review.save()
+            review_inst = form.save(commit=False)
+            if review is not None:
+                review.text = review_inst.text
+                review.save()
+            else:
+                review_inst.user = request.user
+                review_inst.movie = film
+                review_inst.save()
 
     return redirect('movies:detail', pk=film_id)
 
@@ -44,3 +46,12 @@ def add_mark(request, film_id):
             mark.save()
 
     return redirect('movies:detail', pk=film_id)
+
+
+def delete_review(request, pk):
+    review = get_object_or_404(Review, pk=pk)
+
+    if request.user.pk == review.user.pk:
+        review.delete()
+
+    return redirect('movies:detail', pk=review.movie.pk)

@@ -1,0 +1,11 @@
+<ul>
+    {% for review in reviews_list %}
+        <li>
+            <p><strong><a href="{{ review.movie.get_absolute_url }}">{{ review.movie.name }}</a></strong></p>
+            <p>By <a href="{{ review.user.get_absolute_url }}">{{ review.user.username }}</a></p>
+            <p>{{ review.text }}</p>
+        </li>
+    {% empty %}
+        <li>Нет рецензий</li>
+    {% endfor %}
+</ul>

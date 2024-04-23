@@ -7,5 +7,7 @@ urlpatterns = [
     path('register', views.SignUpView.as_view(), name='register'),
 
     path('users/update', views.UpdateUserPage.as_view(), name='update'),
+    path('users/<str:username>/bookmarks', views.UserBookmarksView.as_view(), name='bookmarks'),
+    path('users/<str:username>/reviews', views.UserReviewsView.as_view(), name='user_reviews'),
     path('users/<str:username>', views.UserProfileView.as_view(), name='profile'),
 ]

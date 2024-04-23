@@ -1,0 +1,27 @@
+<ul class="movies_list">
+    {% for film in movies %}
+        <div class="movie_item">
+            <h3><a href="{{ film.get_absolute_url }}">{{ film.name }}</a></h3>
+            <a href="{{ film.get_absolute_url }}">
+                <img src="{{ film.cover.url }}" alt="{{ film.name }} poster">
+            </a>
+            <div>
+                {{ film.description }}
+            </div>
+            {% if film.adult_content %}
+                <span class="adult-span">18+</span>
+            {% endif %}
+            {% if film.tags.all %}
+
+                {% for tag in film.tags.all %}
+                    <span class="tag-span">{{ tag.name }}</span>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+
+            {% endif %}
+
+            <span class="franchise-span"><a href="{% url 'movies:list' %}?franchise={{ film.franchise.name }}">
+                {{ film.franchise }}</a></span>
+        </div>
+    {% endfor %}
+</ul>

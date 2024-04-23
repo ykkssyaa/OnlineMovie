@@ -1,5 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 
 from movies.models import Film, Episode
@@ -65,9 +66,11 @@ class FilmDetailView(DetailView):
         if review:
             # Если рецензия найдена, вставляем её текст в форму
             context['form'] = ReviewForm(instance=review)
+            context['my_review'] = review
         else:
             # Иначе создаем пустую форму
             context['form'] = ReviewForm()
+
 
         mark = Mark.objects.filter(movie=film, user=self.request.user).first()
         if mark:
@@ -76,6 +79,18 @@ class FilmDetailView(DetailView):
             context['markForm'] = MarkForm()
 
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        film = self.get_object()
+
+        if film.adult_content and (
+                not self.request.user.is_authenticated or not self.request.user.adult_content_permission):
+            confirmation_displayed = self.request.session.get('adult_content_confirmation_displayed', False)
+            if not confirmation_displayed:
+                self.request.session['adult_content_confirmation_displayed'] = True
+                return render(self.request, 'movies/confirm_adult_content.html', context)
+
+        return super().render_to_response(context, **response_kwargs)
 
 
 class EpisodeDetailView(DetailView):
@@ -102,3 +117,18 @@ class EpisodeDetailView(DetailView):
         context['title'] = current_episode.series.name + ": " + current_episode.name
 
         return context
+
+
+@login_required
+def add_to_bookmarks(request, pk):
+    film = get_object_or_404(Film, pk=pk)
+    if request.method == 'POST':
+        request.user.bookmarks.add(film)
+        return redirect('movies:detail', pk=pk)
+
+
+def remove_from_bookmarks(request, pk):
+    film = get_object_or_404(Film, pk=pk)
+    if request.method == 'POST':
+        request.user.bookmarks.remove(film)
+        return redirect('movies:detail', pk=pk)

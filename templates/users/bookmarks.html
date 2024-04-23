@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>{{ title }}</h1>
+    <a href="{% url 'users:profile' user_p.username %}">К профилю</a>
+    
+    {% include 'elems/movies/movies_list.html' with movies=bookmarks_list %}
+
+{% endblock %}

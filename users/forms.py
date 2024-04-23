@@ -42,6 +42,7 @@ class LoginForm(AuthenticationForm):
 
 class UserUpdateForm(forms.ModelForm):
     gender = forms.ChoiceField(label='Пол', choices=[('male', 'Мужской'), ('female', 'Женский'), ('other', 'Другой')])
+    adult_content_permission = forms.BooleanField(label='Разрешить взрослый контент', required=False)
 
     class Meta:
         model = CustomUser
