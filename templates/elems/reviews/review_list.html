@@ -1,11 +1,12 @@
-<ul>
+<ul class="review-list">
     {% for review in reviews_list %}
-        <li>
+        <li class="review-item">
             <p><strong><a href="{{ review.movie.get_absolute_url }}">{{ review.movie.name }}</a></strong></p>
             <p>By <a href="{{ review.user.get_absolute_url }}">{{ review.user.username }}</a></p>
+            <hr>
             <p>{{ review.text }}</p>
         </li>
     {% empty %}
-        <li>Нет рецензий</li>
+        <h3>Нет рецензий</h3>
     {% endfor %}
 </ul>

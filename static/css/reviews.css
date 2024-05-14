@@ -1,0 +1,30 @@
+.review-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.review-item {
+    width: 60%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.review-item p {
+    margin: 0;
+}
+
+.review-item p strong {
+    font-weight: bold;
+}
+
+.review-item p a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.review-item p a:hover {
+    text-decoration: underline;
+}

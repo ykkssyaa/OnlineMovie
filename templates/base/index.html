@@ -1,6 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="welcome-message">
+        <h2>Молодец, что заглянул!</h2>
+        <p>Добро пожаловать на наш сайт, где вы можете насладиться просмотром фильмов и сериалов на любой вкус.</p>
+    </div>
+    <div>
+        <h2>Рекомендуем к просмотру:</h2>
+        <div class="movie_item">
+            <h3><a href="{{ film.get_absolute_url }}">{{ film.name }}</a></h3>
 
+            <a href="{{ film.get_absolute_url }}">
+                <img src="{{ film.cover.url }}" alt="{{ film.name }} poster">
+            </a>
+            <p><strong>Средняя оценка: </strong>{{ average_mark }}</p>
+            {% if film.adult_content %}
+                <span class="adult-span">18+</span>
+            {% endif %}
+            {% if film.tags.all %}
 
+                {% for tag in film.tags.all %}
+                    <span class="tag-span">{{ tag.name }}</span>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
 
+            {% endif %}
+
+            <span class="franchise-span"><a href="{% url 'movies:list' %}?franchise={{ film.franchise.name }}">
+                {{ film.franchise }}</a></span>
+        </div>
+
+    </div>
 {% endblock %}

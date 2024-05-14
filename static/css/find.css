@@ -1,0 +1,84 @@
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+select {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+button[type="submit"] {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* ------------------------------------------------------------------ */
+
+.movie_item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    width: 60%;
+}
+
+.movie_item h3 {
+    margin-top: 0;
+}
+
+.movie_item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.movie_item div {
+    margin-bottom: 10px;
+}
+
+.adult-span {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.franchise-span{
+    background-color: #35dc43;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.franchise-span a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.tag-span {
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.tag-span + .tag-span {
+    margin-left: 5px;
+}

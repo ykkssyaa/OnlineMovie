@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
@@ -62,7 +63,11 @@ class FilmDetailView(DetailView):
             episodes_by_series[season].append(episode)
         context['episodes_by_series'] = episodes_by_series
 
-        review = Review.objects.filter(movie=film, user=self.request.user).first()
+        if self.request.user.is_authenticated:
+            review = Review.objects.filter(movie=film, user=self.request.user).first()
+        else:
+            review = None
+
         if review:
             # Если рецензия найдена, вставляем её текст в форму
             context['form'] = ReviewForm(instance=review)
@@ -71,12 +76,22 @@ class FilmDetailView(DetailView):
             # Иначе создаем пустую форму
             context['form'] = ReviewForm()
 
+        if self.request.user.is_authenticated:
+            mark = Mark.objects.filter(movie=film, user=self.request.user).first()
+        else:
+            mark = None
 
-        mark = Mark.objects.filter(movie=film, user=self.request.user).first()
         if mark:
             context['markForm'] = MarkForm(instance=mark)
         else:
             context['markForm'] = MarkForm()
+
+        average_mark = Mark.objects.filter(movie=film).aggregate(Avg('value'))['value__avg']
+
+        if average_mark is None:
+            average_mark = 0
+
+        context['average_mark'] = round(average_mark, 1)
 
         return context
 

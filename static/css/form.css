@@ -1,0 +1,43 @@
+.fff  form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.fff form p {
+    margin-bottom: 15px;
+}
+
+.fff  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.fff  input[type="text"],
+.fff  input[type="password"],
+.fff  input[type="email"]{
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.fff  button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.fff  button[type="submit"]:hover {
+    background-color: #0056b3;
+}

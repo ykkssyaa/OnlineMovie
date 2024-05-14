@@ -18,5 +18,4 @@ class Mark(models.Model):
     value = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
     def __str__(self):
-        return self.user.username + ": " + self.movie.name + " " + self.value
-
+        return f'{self.user.username}: {self.movie.name}-{str(self.value)}'

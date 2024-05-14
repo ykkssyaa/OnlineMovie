@@ -4,7 +4,7 @@
     <div class="profile">
         <h1>{{ user_p.username }}</h1>
 
-        {% include 'elems/users/avatar.html' with user_of_avatar=user_p %}
+        {% include 'elems/users/avatar.html' with user_of_photo=user_p %}
 
         <p>Дата рождения: {{ user_p.birth_date }}</p>
         <p>Имя: {{ user_p.first_name }}</p>
@@ -12,11 +12,11 @@
         <p>Страна: {{ user_p.country.name }}</p>
         <p>Описание: {{ user_p.bio }}</p>
 
-        <a href="{% url 'users:bookmarks' request.user.username %}">Закладки</a>
-        <a href="{% url 'users:user_reviews' request.user.username %}">Рецензии</a>
+        <a class="main-button" href="{% url 'users:bookmarks' user_p.username %}">Закладки</a>
+        <a class="main-button" href="{% url 'users:user_reviews' user_p.username %}">Рецензии</a>
 
         {% if user_p.pk == request.user.pk %}
-            <a href="{% url 'users:update' %}">Редактировать профиль</a>
+            <a class="main-button" href="{% url 'users:update' %}">Редактировать профиль</a>
         {% endif %}
     </div>
 {% endblock %}

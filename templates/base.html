@@ -7,6 +7,10 @@
 
     <link rel="icon" type="image/png" href="{% url 'favicon' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/find.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/movie.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reviews.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
 </head>
 
 <body>
@@ -15,32 +19,51 @@
 
 
     <form method="GET" action="{% url 'movies:list' %}">
-        <input type="text" name="search" placeholder="Поиск...">
-        <button type="submit">Поиск</button>
+        <input type="text" name="search" placeholder="Поиск..." class="search-input"
+               style="width: 500px; padding: 10px;font-size: 16px;border-radius: 5px;">
+        <button type="submit" class="search-button">Поиск</button>
     </form>
 
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'users:logout' %}" class="nav-link text-danger">Выход</a>
-
-        <a href="{% url 'users:profile' username=request.user.username %}">
-            {% include 'elems/users/avatar.html' with user_of_photo=request.user %}
-        </a>
-    {% else %}
-        <a href="{% url 'users:login' %}" class="nav-link">Вход</a>
-    {% endif %}
+    <div>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'users:profile' username=request.user.username %}">
+                {% include 'elems/users/avatar.html' with user_of_photo=request.user %}
+            </a>
+        {% else %}
+            <a href="{% url 'users:login' %}" class="main-button">Вход</a>
+        {% endif %}
+    </div>
 
 
 </header>
-<hr>
 
-<main>
+<div class="wrapper">
+    <div class="nav">
+        <nav>
 
-    {% block content %}
+            <a href="{% url 'index' %}">Главная</a>
+            <a href="{% url 'movies:list' %}?type=movie">Фильмы</a>
+            <a href="{% url 'movies:list' %}?type=series">Сериалы</a>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'users:profile' request.user.username %}">Профиль</a>
+                <a href="{% url 'users:bookmarks' request.user.username %}">Закладки</a>
+                <a href="{% url 'users:user_reviews' request.user.username %}">Ваши рецензии</a>
 
-    {% endblock %}
+                <a href="{% url 'users:logout' %}" style="background-color: #ac3237; background-image: none">Выход</a>
+            {% else %}
+                <a href="{% url 'users:login' %} ">Вход</a>
+            {% endif %}
 
-</main>
-<hr>
+        </nav>
+    </div>
+    <main>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+</div>
 <footer>
     <a href="{% url 'index' %}"><img class="icon" src="{% url 'favicon' %}" alt="icon"/></a>
     <a class="col" href="{% url 'contacts' %}">Контакты</a>

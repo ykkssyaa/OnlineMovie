@@ -3,22 +3,23 @@
 
     <h1>{{ episode.number }}. {{ episode.name }}</h1>
     <h3>{{ episode.series.name }}. {{ episode.season }} Сезон</h3>
+    
     {% if episode.video_file %}
-    <video width="1000px" height="562px" controls>
-        <source src="{{ episode.video_file.url }}" type="video/mp4">
-    </video>
+        <video width="1000px" height="562px" controls>
+            <source src="{{ episode.video_file.url }}" type="video/mp4">
+        </video>
     {% endif %}
 
     <p><strong>Описание:</strong> {{ episode.description }}</p>
 
     {% if previous_episode %}
-        <a href="{% url 'movies:episode_detail' previous_episode.pk %}">Предыдущий эпизод</a>
+        <a class="main-button" href="{% url 'movies:episode_detail' previous_episode.pk %}">Предыдущий эпизод</a>
     {% endif %}
 
     {% if next_episode %}
-        <a href="{% url 'movies:episode_detail' next_episode.pk %}">Следующий эпизод</a>
+        <a class="main-button" href="{% url 'movies:episode_detail' next_episode.pk %}">Следующий эпизод</a>
     {% endif %}
 
-    <a href="{% url 'movies:detail' episode.series.pk %}">К сериалу</a>
+    <a class="main-button" href="{% url 'movies:detail' episode.series.pk %}">К сериалу</a>
 
 {% endblock %}

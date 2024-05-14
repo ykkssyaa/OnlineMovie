@@ -3,93 +3,113 @@
 
     <h1>{{ film.name }}</h1>
 
-    {% if film.cover %}
-        <img src="{{ film.cover.url }}" alt="Обложка фильма" style="width:70%;">
-    {% endif %}
+    <div class="movie-info-container">
+        <div class="movie-poster">
+            {% if film.cover %}
+                <img src="{{ film.cover.url }}" alt="Обложка фильма">
+            {% endif %}
+        </div>
 
+        <div class="movie-details">
+            <p><strong>Дата премьеры:</strong> {{ film.premiere_date }}</p>
+            <p><strong>Дата анонса:</strong> {{ film.announcement_date }}</p>
+            <p><strong>Аннотация:</strong> {{ film.annotation }}</p>
+            <p><strong>Для взрослых:</strong>
+                {% if film.adult_content %}
+                    <span class="adult-span">Да</span>
+                {% else %}
+                    <span class="adult-span" style="background-color: #1c935d;">Нет</span>
+                {% endif %}
+            </p>
+            <p><strong>Средняя оценка: </strong>{{ average_mark }}</p>
+            <p><strong>Франшиза:</strong>
+                <span class="franchise-span"><a href="{% url 'movies:list' %}?franchise={{ film.franchise.name }}">
+                    {{ film.franchise }}</a></span>
+            </p>
+            {% if film.tags.all %}
+                <p><strong>Теги:</strong>
+                    {% for tag in film.tags.all %}
+                        <span class="tag-span">{{ tag.name }}</span>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <div style="">
+                    {% if film in request.user.bookmarks.all %}
 
-        <p><strong>Дата премьеры:</strong> {{ film.premiere_date }}</p>
-    <p><strong>Дата анонса:</strong> {{ film.announcement_date }}</p>
-    <p><strong>Аннотация:</strong> {{ film.annotation }}</p>
-    <p><strong>Для взрослых:</strong>
-        {% if film.adult_content %}
-            Да
-        {% else %}
-            Нет
-        {% endif %}
-    </p>
-    <p><strong>Дата и время публикации:</strong> {{ film.publication_datetime }}</p>
+                        <form action="{% url 'movies:remove_from_bookmarks' film.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    style="background-color: #ac3237; background-image: none; font-size: 25px">
+                                Удалить из закладок
+                            </button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'movies:add_to_bookmarks' film.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" style="font-size: 25px">Добавить в закладки</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
-    <p><strong>Франшиза:</strong>
-        <a href="{% url 'movies:list' %}?franchise={{ film.franchise.name }}">
-        {{ film.franchise }}</a>
-    </p>
-
-    {% if film.tags.all %}
-        <p><strong>Теги:</strong>
-            {% for tag in film.tags.all %}
-                {{ tag.name }}
-                {% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </p>
-    {% endif %}
 
     {% if film.media_type == 'movie' %}
-        <video width="1000px" height="562px" controls>
-            <source src="{{ film.video_file.url }}" type="video/mp4">
-        </video>
+        <div>
+            <h2>Приятного просмотра! </h2>
+            <video width="1000px" height="562px" controls>
+                <source src="{{ film.video_file.url }}" type="video/mp4">
+            </video>
+        </div>
     {% endif %}
 
 
     {% if film.media_type == 'series' %}
+        <div class="seasons">
         {% for season, episodes in episodes_by_series.items %}
+            <div class="season-item">
             <h2>{{ season }} сезон</h2>
             <ol>
                 {% for episode in episodes %}
-                    <li><a href="{% url 'movies:episode_detail' episode.pk %}">{{ episode.name }}</a></li>
+                    <li class="episode-item"><a href="{% url 'movies:episode_detail' episode.pk %}">{{ episode.name }}</a></li>
                 {% endfor %}
             </ol>
+            </div>
         {% endfor %}
+        </div>
     {% endif %}
 
     {% if request.user.is_authenticated %}
 
-        <h2>Оставь оценку</h2>
-        <form method="post" action="{% url 'reviews:add_mark' film.pk %}">
-            {% csrf_token %}
-            {{ markForm.as_p }}
-            <button type="submit">Сохранить</button>
-        </form>
+        <div>
+            <hr>
 
-
-        {% if film in request.user.bookmarks.all %}
-            <form action="{% url 'movies:remove_from_bookmarks' film.pk %}" method="post">
+            <h2>Оставь оценку</h2>
+            <form method="post" action="{% url 'reviews:add_mark' film.pk %}">
                 {% csrf_token %}
-                <button type="submit">Удалить из закладок</button>
+                {{ markForm.as_p }}
+                <button type="submit">Сохранить</button>
             </form>
-        {% else %}
-            <form action="{% url 'movies:add_to_bookmarks' film.pk %}" method="post">
+
+            <hr>
+            <h2>Добавить рецензию</h2>
+            <form method="post" action="{% url 'reviews:add_review' film.pk %}">
                 {% csrf_token %}
-                <button type="submit">Добавить в закладки</button>
+                {{ form.as_p }}
+                <button type="submit">Сохранить</button>
+
             </form>
-        {% endif %}
 
-
-        <h2>Добавить рецензию</h2>
-        <form method="post" action="{% url 'reviews:add_review' film.pk %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Сохранить</button>
-
-        </form>
-
-        {% if my_review %}
-            <a href="{% url 'reviews:delete_review' my_review.pk %}">Удалить рецензию</a>
-        {% endif %}
-
+            {% if my_review %}
+                <a href="{% url 'reviews:delete_review' my_review.pk %}">Удалить рецензию</a>
+            {% endif %}
+        </div>
     {% endif %}
 
     <h2>Рецензии</h2>
-    {% include 'elems/reviews/review_list.html' with review_list=film.review_set.all %}
+    {% include 'elems/reviews/review_list.html' with reviews_list=film.review_set.all %}
 
 {% endblock %}
